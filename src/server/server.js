@@ -23,26 +23,26 @@ let flightSuretyApp = new web3.eth.Contract(FlightSuretyAppABI.abi, Config["loca
 // });
 
 const flights = [
-    {"id": 0, "name": "FLGT001"},
-    {"id": 1, "name": "FLGT002"},
-    {"id": 2, "name": "FLGT003"},
-    {"id": 3, "name": "KL1105"},
-    {"id": 4, "name": "KE6419"},
-    {"id": 5, "name": "KL1107"},
-    {"id": 6, "name": "9W8515"}
+    {"id": 0, "name": "JJ3720"},
+    {"id": 1, "name": "JJ4732"},
+    {"id": 2, "name": "AD2626"},
+    {"id": 3, "name": "AD2413"},
+    {"id": 4, "name": "AD2950"},
+    {"id": 5, "name": "G35638"},
+    {"id": 6, "name": "AD4120"}
 ]
 
-let oracle_address = [];
+let oracleAddress = [];
 let eventIndex = null;
 
 
-function initOracles() {
+function registerOracles() {
     return new Promise((resolve, reject) => {
         web3.eth.getAccounts().then(accounts => {
-            let rounds = 22
+            let rounds = 2
             let oracles = [];
             flightSuretyApp.methods.REGISTRATION_FEE().call().then(fee => {
-                accounts.slice(11, 33).forEach(account => {
+                accounts.slice(5, 7).forEach(account => {
                     flightSuretyApp.methods.registerOracle().send({
                         from: account,
                         value: fee,
@@ -53,7 +53,7 @@ function initOracles() {
                             from: account
                         }).then(result => {
                             oracles.push(result);
-                            oracle_address.push(account);
+                            oracleAddress.push(account);
                             console.log(`Oracle Registered: ${result[0]}, ${result[1]}, ${result[2]} at ${account}`);
                             rounds -= 1;
                             if (!rounds) {
@@ -77,10 +77,10 @@ function initOracles() {
     });
 }
 
-function initREST() {
+function setExpressRouters() {
     app.get('/api', (req, res) => {
         res.send({
-            message: 'An API for use with your Dapp!'
+            message: 'API Online!'
         })
     })
 
@@ -95,18 +95,15 @@ function initREST() {
             result: eventIndex
         })
     })
-    console.log("App.get defined");
+    console.log("Express routers defined!");
 }
 
-initOracles().then(oracles => {
-    console.log("All oracles registered");
-    initREST();
-    flightSuretyApp.methods.SubmitOracleResponse({
-        fromBlock: "latest"
-    }, (error, event) => {
+function watchEvents() {
+    flightSuretyApp.events.SubmitOracleResponse({fromBlock: "latest"}, (error, event) => {
         if (error) {
             console.log(error)
         }
+
         console.log(event);
 
         let airline = event.returnValues.airline;
@@ -115,58 +112,66 @@ initOracles().then(oracles => {
         let indexes = event.returnValues.indexes;
         let statusCode = event.returnValues.statusCode;
 
-        for (let a = 0; a < oracle_address.length; a++) {
+        for (let a = 0; a < oracleAddress.length; a++) {
             console.log("Oracle loop ", a);
             flightSuretyApp.methods.submitOracleResponse(indexes, airline, flight, timestamp, statusCode)
                 .send({
-                    from: oracle_address[a]
+                    from: oracleAddress[a]
                 }).then(result => {
                 console.log(result);
             }).catch(err => {
                 console.log("Oracle didn't respond");
+
             });
         }
+
     });
 
-    flightSuretyApp.RegisterAirline({fromBlock: 0}, (error, event) => {
+    flightSuretyApp.events.RegisterAirline({fromBlock: 0}, (error, event) => {
+        if (error) console.log(error)
+        console.log('Register Airline event: ', event)
+    });
+
+    flightSuretyApp.events.FundedAirlines({fromBlock: 0}, (error, event) => {
         if (error) console.log(error)
         console.log(event)
     });
 
-    flightSuretyApp.FundedLines({fromBlock: 0}, (error, event) => {
+    flightSuretyApp.events.PurchaseInsurance({fromBlock: 0}, (error, event) => {
         if (error) console.log(error)
         console.log(event)
     });
 
-    flightSuretyApp.PurchaseInsurance({fromBlock: 0}, (error, event) => {
+    flightSuretyApp.events.CreditInsurees({fromBlock: 0}, (error, event) => {
         if (error) console.log(error)
         console.log(event)
     });
 
-    flightSuretyApp.CreditInsurees({fromBlock: 0}, (error, event) => {
+    flightSuretyApp.events.Withdraw({fromBlock: 0}, (error, event) => {
         if (error) console.log(error)
         console.log(event)
     });
 
-    flightSuretyApp.Withdraw({fromBlock: 0}, (error, event) => {
-        if (error) console.log(error)
-        console.log(event)
-    });
-
-    flightSuretyApp.OracleRequest({fromBlock: 0}, (error, event) => {
+    flightSuretyApp.events.OracleRequest({fromBlock: 0}, (error, event) => {
         if (error) console.log(error)
 
         eventIndex = event.returnValues.index;
         console.log(event)
     });
 
-    flightSuretyApp.OracleReport({fromBlock: 0}, (error, event) => {
+    flightSuretyApp.events.OracleReport({fromBlock: 0}, (error, event) => {
         if (error) console.log(error)
         console.log(event)
     });
+}
 
+registerOracles().then(oracles => {
+    console.log("Oracles registered");
+    setExpressRouters();
+    // To show events (DEBUG)
+    watchEvents();
 }).catch(err => {
-    console.log(err.message);
+    console.log('Error to Initial Oracle: ', err.message);
 })
 
 

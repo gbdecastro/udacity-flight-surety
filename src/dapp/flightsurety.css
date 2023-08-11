@@ -1,45 +1,52 @@
 body {
-    background-image: url('flight.jpg'); /* Source: iStockPhoto */
+    background-image: url('flight.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 .container {
     margin-top: 200px;
-    background-color: #000;
+    background-color: #f5f5f5;
     opacity: 0.9;
-    color: #fff;
+    color: #333333;
     padding: 40px;
 }
+
 .top-20 {
     margin-top: 20px;
 }
 
 h5 {
-    color: #999999;
+    color: #777777;
 }
 
 section {
     margin-bottom: 50px;
 }
+
 .field {
     font-weight: bold;
     text-align: right;
 }
+
 .field-value {
-    color: #0e7fa8;
+    color: #3498db;
 }
+
 label.form {
     font-size: 14px;
     margin-right: 20px;
 }
+
 input {
     margin-right: 30px;
 }
-input[type=number] {
-    color: red;
 
+input[type=number] {
+    color: #e74c3c;
 }
-#flight-number{
+
+#flight-number {
     -webkit-appearance: button;
     -moz-appearance: button;
     -webkit-user-select: none;
@@ -50,7 +57,7 @@ input[type=number] {
     -moz-padding-start: 2px;
     margin-right: 30px;
     background-repeat: no-repeat;
-    border: 1px solid #AAA;
+    border: 1px solid #aaa;
     border-radius: 2px;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
     color: #555;
@@ -61,58 +68,61 @@ input[type=number] {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-#depature-date{
+
+#departure-date {
     appearance: none;
     -webkit-appearance: none;
     color: #95a5a6;
     font-family: "Helvetica", arial, sans-serif;
     font-size: 18px;
-    border:1px solid #ecf0f1;
-    background:#ecf0f1;
-    padding:5px;
+    border: 1px solid #ecf0f1;
+    background: #ecf0f1;
+    padding: 5px;
     display: inline-block !important;
     visibility: visible !important;
-
 }
-#pay{
+
+#pay {
     margin: auto;
     width: 50%;
-    border: 3px solid green;
+    border: 3px solid #2ecc71;
     padding: 10px;
 }
-/* The Modal (background) */
+
 .modal {
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
 }
-/* Modal Content/Box */
+
 .modal-content {
-    background-color: #000;
+    background-color: #f5f5f5;
     opacity: 0.9;
-    color: #fff;
-    margin: 15% auto; /* 15% from the top and centered */
+    color: #333333;
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
 }
-#oracle-response{
+
+#oracle-response {
     width: 100%;
     height: 40px;
-    background-color: rgb(63, 62, 62); /* Green */
+    background-color: #3498db;
     color: white;
 }
-#withdrawn{
-    color: #4F8A10;
-    background-color: #DFF2BF;
-    display:inline-block;
-    text-decoration:inherit;
-    width:100%;
-    margin-right:.2em;
-    text-align:center;
-    font-variant:normal;
-    text-transform:none;
-    font-size:40px;
+
+#withdrawn {
+    color: #4f8a10;
+    background-color: #dff2bf;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 100%;
+    margin-right: 0.2em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    font-size: 40px;
 }
