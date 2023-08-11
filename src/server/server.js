@@ -39,10 +39,10 @@ let eventIndex = null;
 function registerOracles() {
     return new Promise((resolve, reject) => {
         web3.eth.getAccounts().then(accounts => {
-            let rounds = 2
+            let rounds = 25
             let oracles = [];
             flightSuretyApp.methods.REGISTRATION_FEE().call().then(fee => {
-                accounts.slice(5, 7).forEach(account => {
+                accounts.slice(10, 35).forEach(account => {
                     flightSuretyApp.methods.registerOracle().send({
                         from: account,
                         value: fee,
